@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        #downloadLink{
+            display: block;
+            padding:10px;
+            border:1px solid #000;
+            border-radius: 10px;
+            margin-top:10px;
+            width: fit-content;
+            cursor: pointer;
+        }
+    </style>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+
+<body>
+    <table id="table" border="1">
+        <tr>
+            <th>購入店鋪</td>
+            <th>購買型號</td>
+            <th>發票號碼</td>
+            <th>發票日期</td>
+            <th>製造型號</td>
+            <th>發票圖片</td>
+            <th>保證書圖片</td>
+            <th>贈品名稱</td>
+        </tr>
+        <tr>
+            <td>雅光有限公司</td>
+            <td>MR-JX61C</td>
+            <td>RQ12344567</td>
+            <td>2020-05-13</td>
+            <td>123456</td>
+            <td>
+                <a href="https://google.com">2290_invoice_1</a>
+            </td>
+            <td>
+                <a href="https://google.com">2290_card_1</a>
+            </td>
+            <td>賓士轎車</td>
+        </tr>
+        <tr>
+            <td>光亞有限公司</td>
+            <td>MR-JX61S</td>
+            <td>RQ7654321</td>
+            <td>2020-05-03</td>
+            <td>654321</td>
+            <td>
+                <a href="https://google.com">2290_invoice_2</a>
+            </td>
+            <td>
+                <a href="https://google.com">2290_card_2</a>
+            </td>
+            <td>BMW轎車</td>
+        </tr>
+    </table>
+
+    <a id="downloadLink" onclick="exportExcel(this)">Export</a>
+</body>
+<script>
+    function exportExcel(e) {
+        $('td a').each(function (i, item) { // convert a tag to hyperlink
+            $(this).html(`=HYPERLINK\("${$(this).attr("href")}","${$(this).html()}")`);
+        })
+        var table = document.getElementById("table");
+        var html = table.outerHTML;
+
+        var url = 'data:application/vnd.ms-excel,' + encodeURI(html);
+        e.setAttribute("href", url);
+        e.setAttribute("download", "data.xls");
+        $('td a').each(function (i, item) { // convert hyperlink to a tag
+            const text = $(this).text().replace(`=HYPERLINK\("${$(this).attr("href")}","`, "").replace(`")`, "")
+            $(this).html(text);
+        })
+        return false;
+    }
+</script>
+
+</html>
